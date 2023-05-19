@@ -54,10 +54,10 @@ function App() {
         <div className='university-list'>
           {universities.map((university, index) => (
             <div className='card'key={index}>
-              <p>{university.country}</p>
-              <p>{university.name}</p>
-              <p>{university.web_pages.join(', ')}</p>
-              <p>{university.domains.join(', ')}</p>
+              <p>Country: {university.country}</p>
+              <p>Name: {university.name}</p>
+              <p>Website: {university.web_pages.join(', ')}</p>
+              <p>Domain: {university.domains.join(', ')}</p>
             </div>
           ))}
         </div>
