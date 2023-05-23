@@ -1,9 +1,10 @@
-import { useState , useEffect} from 'react'
-import './App.css'
+import { useState, useEffect } from 'react';
+import './App.css';
 
 function App() {
   const [searchParam, setSearchParam] = useState('');
   const [universities, setUniversities] = useState([]);
+  const API_URL = 'https://universitiesapi.onrender.com/v1/api/universities/';
 
   useEffect(() => {
     fetchUniversities();
@@ -11,7 +12,7 @@ function App() {
 
   const fetchUniversities = async () => {
     try {
-      const response = await fetch('http://universities.hipolabs.com/search');
+      const response = await fetch(API_URL);
       const data = await response.json();
       setUniversities(data);
     } catch (error) {
@@ -21,9 +22,12 @@ function App() {
 
   const handleSearch = async () => {
     try {
-      const response = await fetch(`http://universities.hipolabs.com/search?country=${searchParam}`);
+      const response = await fetch(API_URL);
       const data = await response.json();
-      setUniversities(data);
+      const filteredUniversities = data.filter((university) =>
+        university.country.toLowerCase() === searchParam.toLowerCase()
+      );
+      setUniversities(filteredUniversities);
     } catch (error) {
       console.error('Error searching universities:', error);
     }
@@ -38,8 +42,8 @@ function App() {
     <div>
       <div className='Search-bar'>
         <input
-          type="text"
-          placeholder="Enter country name"
+          type='text'
+          placeholder='Enter country name'
           value={searchParam}
           onChange={(e) => setSearchParam(e.target.value)}
         />
@@ -53,11 +57,12 @@ function App() {
       ) : (
         <div className='university-list'>
           {universities.map((university, index) => (
-            <div className='card'key={index}>
+            <div className='card' key={index}>
               <p>Country: {university.country}</p>
               <p>Name: {university.name}</p>
               <p>Website: {university.web_pages.join(', ')}</p>
-              <p>Domain: {university.domains.join(', ')}</p>
+              <p>ID: {university._id}</p>
+              <p>Alpha Code: {university.alpha_two_code}</p>
             </div>
           ))}
         </div>
@@ -66,4 +71,4 @@ function App() {
   );
 }
 
-export default App
+export default App;
